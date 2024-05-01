@@ -1,6 +1,5 @@
 package com.example.recyclerview.retrofit
 
-import com.example.recyclerview.pojo.FoodApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
