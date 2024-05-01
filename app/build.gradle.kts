@@ -60,15 +60,11 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0-rc01")
     implementation ("android.arch.lifecycle:extensions:1.1.0")
 
-    //Glide
-    //implementation ("com.github.bumptech.glide:glide:4.12.0")
-
-
-    //room
-   // implementation ("androidx.room:room-runtime:$room_version")
-   // kapt ("androidx.room:room-compiler:$room_version")
-
+    //intuit
+    implementation ("com.intuit.sdp:sdp-android:1.0.6")
+    implementation ("com.intuit.ssp:ssp-android:1.0.6")
 
     //gif
-    // implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.17")
+    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.17")
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
 }
