@@ -1,5 +1,6 @@
 package com.example.recyclerview.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -41,8 +42,18 @@ class HomeFragment : Fragment()
     override fun onViewCreated(view: View , savedInstanceState: Bundle?)
     {
         super.onViewCreated(view , savedInstanceState)
+        homeMVVM.getRandomModel()
         observeRandomMeal()
+        onRandomMealClick()
 
+
+    }
+
+    private fun onRandomMealClick()
+    {
+        binding.randomMeal.setOnClickListener{
+            val intent = Intent(t)
+        }
     }
 
     private fun observeRandomMeal()
