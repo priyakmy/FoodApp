@@ -63,9 +63,9 @@ class HomeFragment : Fragment()
     {
         binding.randomMeal.setOnClickListener{
             val intent = Intent(activity,MealActivity::class.java)
-            intent.putExtra(MEAL_ID.randomMeal.idMeal)
-            intent.putExtra(MEAL_NAME.randomMeal.strMeal)
-            intent.putExtra(MEAL_THUMB.randomMeal.strMealThumb)
+            intent.putExtra(MEAL_ID,homeMVVM.randomMealLiveData.value?.idMeal)
+            intent.putExtra(MEAL_NAME,homeMVVM.randomMealLiveData.value?.strMeal)
+            intent.putExtra(MEAL_THUMB, homeMVVM.randomMealLiveData.value?.strMealThumb)
             startActivity(intent)
 
         }
@@ -74,9 +74,9 @@ class HomeFragment : Fragment()
     private fun observeRandomMeal()
     {
         homeMVVM.observeRandomMealLiveData().observe(viewLifecycleOwner
-        ) { t ->
+        ) { meal ->
             Glide.with(this@HomeFragment)
-                    .load(t!!.strMealThumb)
+                    .load(meal.strMealThumb)
                     .into(binding.imgRandomMeal)
 
             this.randomMeal = meal

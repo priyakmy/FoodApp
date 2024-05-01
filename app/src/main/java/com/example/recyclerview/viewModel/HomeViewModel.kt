@@ -12,7 +12,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class HomeViewModel(): ViewModel() {
-    private  var randomMealLiveData = MutableLiveData<Meal>()
+    var randomMealLiveData = MutableLiveData<Meal>()
     fun getRandomModel(){
         RetrofitInstance.foodApi.getRandomMeal().enqueue(object : Callback<MealList> {
             override fun onResponse(call: Call<MealList>, response: Response<MealList>) {

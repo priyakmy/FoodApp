@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.recyclerview.databinding.ActivityMainBinding
+import com.example.recyclerview.databinding.ActivityMealBinding
 import com.example.recyclerview.fragments.HomeFragment
 
 class MealActivity : AppCompatActivity()
@@ -11,11 +12,11 @@ class MealActivity : AppCompatActivity()
     private lateinit var mealId:String
     private lateinit var mealName:String
     private lateinit var mealThumb:String
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMealBinding
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMealBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         getMealInformationFromIntent()
@@ -24,17 +25,18 @@ class MealActivity : AppCompatActivity()
 
     private fun setInformationInViews()
     {
-        Glide.with(applicationContext)
+        Glide.with(this)
                 .load(mealThumb)
-                .into(binding.imageMealDetail)
+                .into(binding.imgMealDetail)
 
-        binding.collapingToolbar.title = mealName
+        binding.collapsingToolbar.title = mealName
+
 
     }
 
 
     private fun getMealInformationFromIntent(){
-        val intent =intent
+        val intent = intent
         mealId = intent.getStringExtra(HomeFragment.MEAL_ID)!!
         mealName = intent.getStringExtra(HomeFragment.MEAL_NAME)!!
         mealThumb = intent.getStringExtra(HomeFragment.MEAL_THUMB)!!
