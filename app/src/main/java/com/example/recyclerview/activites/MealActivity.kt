@@ -1,80 +1,43 @@
 package com.example.recyclerview.activites
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
-import com.example.recyclerview.pojo.Meal
+import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.example.recyclerview.databinding.ActivityMainBinding
+import com.example.recyclerview.fragments.HomeFragment
 
-class MealActivity : AppCompatActivity() {
-    private lateinit var mealActivityMvvm: MealActivityMVVM
-    private lateinit var binding: ActivityCategoriesBinding
-    private lateinit var myAdapter: MealRecyclerAdapter
-    private var categoryNme = ""
-    override fun onCreate(savedInstanceState: Bundle?) {
+class MealActivity : AppCompatActivity()
+{
+    private lateinit var mealId:String
+    private lateinit var mealName:String
+    private lateinit var mealThumb:String
+    private lateinit var binding: ActivityMainBinding
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
-        binding = ActivityCategoriesBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mealActivityMvvm = ViewModelProviders.of(this)[MealActivityMVVM::class.java]
-        startLoading()
-        prepareRecyclerView()
-        mealActivityMvvm.getMealsByCategory(getCategory())
-        mealActivityMvvm.observeMeal().observe(this, object : Observer<List<Meal>> {
-            override fun onChanged(value: List<Meal>)
-            {
-                if(t==null){
-                    hideLoading()
-                    Toast.makeText(applicationContext, "No meals in this category", Toast.LENGTH_SHORT).show()
-                    onBackPressed()
-                }else {
-                    myAdapter.setCategoryList(t!!)
-                    binding.tvCategoryCount.text = categoryNme + " : " + t.size.toString()
-                    hideLoading()
-                }
-            }
-        })
 
-        myAdapter.setOnMealClickListener(object : SetOnMealClickListener {
-            override fun setOnClickListener(meal: Meal) {
-                val intent = Intent(applicationContext, MealDetailesActivity::class.java)
-                intent.putExtra(MEAL_ID, meal.idMeal)
-                intent.putExtra(MEAL_STR, meal.strMeal)
-                intent.putExtra(MEAL_THUMB, meal.strMealThumb)
-                startActivity(intent)
-            }
-        })
+        getMealInformationFromIntent()
+        setInformationInViews()
     }
 
-    private fun hideLoading() {
-        binding.apply {
-            loadingGifMeals.visibility = View.INVISIBLE
-            mealRoot.setBackgroundColor(ContextCompat.getColor(applicationContext,R.color.white))
-        }    }
+    private fun setInformationInViews()
+    {
+        Glide.with(applicationContext)
+                .load(mealThumb)
+                .into(binding.imageMealDetail)
 
-    private fun startLoading() {
-        binding.apply {
-            loadingGifMeals.visibility = View.VISIBLE
-            mealRoot.setBackgroundColor(ContextCompat.getColor(applicationContext,R.color.g_loading))
-        }
+        binding.collapingToolbar.title = mealName
+
     }
 
-    private fun getCategory(): String {
-        val tempIntent = intent
-        val x = intent.getStringExtra(CATEGORY_NAME)!!
-        categoryNme = x
-        return x
-    }
 
-    private fun prepareRecyclerView() {
-        myAdapter = MealRecyclerAdapter()
-        binding.mealRecyclerview.apply {
-            adapter = myAdapter
-            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        }
+    private fun getMealInformationFromIntent(){
+        val intent =intent
+        mealId = intent.getStringExtra(HomeFragment.MEAL_ID)!!
+        mealName = intent.getStringExtra(HomeFragment.MEAL_NAME)!!
+        mealThumb = intent.getStringExtra(HomeFragment.MEAL_THUMB)!!
+
     }
 }

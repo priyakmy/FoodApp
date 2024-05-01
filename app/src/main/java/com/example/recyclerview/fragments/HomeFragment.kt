@@ -7,9 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.example.recyclerview.activites.MealActivity
 import com.example.recyclerview.databinding.FragmentHomeBinding
 import com.example.recyclerview.pojo.Meal
 import com.example.recyclerview.pojo.MealList
@@ -24,6 +24,16 @@ class HomeFragment : Fragment()
 {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var homeMVVM : HomeViewModel
+    private lateinit var randomMeal : Meal
+
+
+    companion object{
+        const val MEAL_ID="com.example.easyfood.ui.fragments.idMeal"
+        const val MEAL_NAME="com.example.easyfood.ui.fragments.nameMeal"
+        const val MEAL_THUMB="com.example.easyfood.ui.fragments.thumbMeal"
+
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -52,7 +62,12 @@ class HomeFragment : Fragment()
     private fun onRandomMealClick()
     {
         binding.randomMeal.setOnClickListener{
-            val intent = Intent(t)
+            val intent = Intent(activity,MealActivity::class.java)
+            intent.putExtra(MEAL_ID.randomMeal.idMeal)
+            intent.putExtra(MEAL_NAME.randomMeal.strMeal)
+            intent.putExtra(MEAL_THUMB.randomMeal.strMealThumb)
+            startActivity(intent)
+
         }
     }
 
@@ -63,6 +78,8 @@ class HomeFragment : Fragment()
             Glide.with(this@HomeFragment)
                     .load(t!!.strMealThumb)
                     .into(binding.imgRandomMeal)
+
+            this.randomMeal = meal
         }
     }
 
