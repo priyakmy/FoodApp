@@ -16,7 +16,7 @@
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -26,7 +26,7 @@
             app:title="Meal name">
 
             <ImageView
-                android:id="@+id/img_meal_detail"
+                android:id="@+id/imgMealDetail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -55,7 +55,7 @@
             android:layout_marginBottom="45dp">
 
             <LinearLayout
-                android:id="@+id/meal_info"
+                android:id="@+id/mealInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -63,7 +63,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/tv_categoryInfo"
+                    android:id="@+id/tv_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -91,7 +91,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_instructions"
+                android:id="@+id/tvInstructions"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="15dp"
@@ -103,7 +103,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/meal_info" />
+                app:layout_constraintTop_toBottomOf="@id/mealInfo" />
 
             <TextView
                 android:id="@+id/tv_content"
@@ -113,7 +113,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_instructions" />
+                app:layout_constraintTop_toBottomOf="@id/tvInstructions" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -136,7 +136,7 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_save"
+        android:id="@+id/btnSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="30dp"
