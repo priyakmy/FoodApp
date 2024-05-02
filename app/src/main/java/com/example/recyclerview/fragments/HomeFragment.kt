@@ -81,11 +81,11 @@ class HomeFragment : Fragment()
 
     private fun observePopularItemsLiveData()
     {
-        homeMVVM.observePopularItemsLiveData().observe(viewLifecycleOwner ,
-         { mealList->
-            popularItemsAdapter.setMeals(mealList = mealList as ArrayList)
-
-        })
+        homeMVVM.observePopularItemsLiveData().observe(
+                viewLifecycleOwner ,
+        ) { mealList ->
+            popularItemsAdapter.setMeals(mealsList = mealList as ArrayList)
+        }
     }
 
     private fun onRandomMealClick()
