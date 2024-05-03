@@ -44,22 +44,20 @@ class HomeFragment : Fragment()
     {
         super.onCreate(savedInstanceState)
         homeMVVM = ViewModelProviders.of(this)[HomeViewModel::class.java]
-
-        popularItemsAdapter = PopularMealAdapter()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater , container: ViewGroup? ,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentHomeBinding.inflate(inflater)
+        binding = FragmentHomeBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View , savedInstanceState: Bundle?)
     {
         super.onViewCreated(view , savedInstanceState)
-
+        popularItemsAdapter = PopularMealAdapter()
         preparePopularItemsRecyclerView()
         homeMVVM.getRandomModel()
         observeRandomMeal()
@@ -81,11 +79,12 @@ class HomeFragment : Fragment()
 
     private fun observePopularItemsLiveData()
     {
-        homeMVVM.observePopularItemsLiveData().observe(viewLifecycleOwner ,
-         { mealList->
-            popularItemsAdapter.setMeals(mealList = mealList as ArrayList)
-
-        })
+        homeMVVM.observePopularItemsLiveData().observe(
+                viewLifecycleOwner ,
+        ) { mealList ->
+            Log.d("tag", "observePopularItemsLiveData:${mealList.size} ")
+            popularItemsAdapter.setMeals(mealsList = mealList as ArrayList)
+        }
     }
 
     private fun onRandomMealClick()

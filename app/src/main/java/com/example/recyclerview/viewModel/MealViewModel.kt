@@ -19,7 +19,6 @@ class MealViewModel: ViewModel()
             response.body()?.let {
                 Log.d("TAG" , "onResponse:${it.meals.get(0).idMeal} name = ${it.meals.get(0).strMeal} ")
             }
-
         }
 
          fun onFailure(call: Call<MealList> , t: Throwable) {
