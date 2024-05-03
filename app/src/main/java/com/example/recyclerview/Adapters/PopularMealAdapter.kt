@@ -10,6 +10,7 @@ import com.example.recyclerview.pojo.CategoryMeals
 
 class PopularMealAdapter : RecyclerView.Adapter<PopularMealAdapter.PopularMealViewHolder>() {
     private var mealsList = ArrayList<CategoryMeals>()
+    lateinit var onItemClick: ((CategoryMeals) -> Unit)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMealViewHolder {
         val binding = PopularItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -26,6 +27,10 @@ class PopularMealAdapter : RecyclerView.Adapter<PopularMealAdapter.PopularMealVi
         Glide.with(holder.itemView)
                 .load(meal.strMealThumb)
                 .into(holder.binding.imgPopularMeal)
+
+        holder.itemView.setOnClickListener {
+            onItemClick.invoke(mealsList[position])
+        }
     }
 
     fun setMeals(mealsList: List<CategoryMeals>) {
@@ -35,4 +40,5 @@ class PopularMealAdapter : RecyclerView.Adapter<PopularMealAdapter.PopularMealVi
     }
 
     class PopularMealViewHolder(val binding: PopularItemsBinding) : RecyclerView.ViewHolder(binding.root)
+
 }
