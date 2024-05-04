@@ -7,14 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.recyclerview.Adapters.PopularMealAdapter
 import com.example.recyclerview.activites.MealActivity
 import com.example.recyclerview.databinding.FragmentHomeBinding
-import com.example.recyclerview.pojo.CategoryMeals
 import com.example.recyclerview.pojo.Meal
 import com.example.recyclerview.pojo.MealList
 import com.example.recyclerview.retrofit.RetrofitInstance
@@ -22,6 +20,7 @@ import com.example.recyclerview.viewModel.HomeViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 
 class HomeFragment : Fragment()
@@ -59,6 +58,7 @@ class HomeFragment : Fragment()
         super.onViewCreated(view , savedInstanceState)
         popularItemsAdapter = PopularMealAdapter()
         preparePopularItemsRecyclerView()
+
         homeMVVM.getRandomModel()
         observeRandomMeal()
         onRandomMealClick()
@@ -67,8 +67,18 @@ class HomeFragment : Fragment()
         observePopularItemsLiveData()
         onPopularItemClick()
 
+        homeMVVM.getCategories()
+        observeCategoriesLiveData()
+
 
     }
+
+    private fun observeCategoriesLiveData() =
+            homeMVVM.observeCategoriesLiveData().observe(viewLifecycleOwner) { categories ->
+                categories.forEach { category ->
+                }
+            }
+
 
     private fun onPopularItemClick()
     {
@@ -129,7 +139,7 @@ class HomeFragment : Fragment()
         RetrofitInstance.foodApi.getRandomMeal().enqueue(object : Callback<MealList>{
             override fun onResponse(call: Call<MealList>, response: Response<MealList>) {
                 response.body()?.let {
-                    Log.d("TAG", "onResponse:${it.meals.get(0).idMeal} name = ${it.meals.get(0).strMeal} ")
+                    Log.d("TAG", "onResponse:${it.meals[0].idMeal} name = ${it.meals[0].strMeal} ")
                 }
 
             }

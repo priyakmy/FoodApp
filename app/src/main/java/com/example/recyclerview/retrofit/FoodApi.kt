@@ -1,6 +1,7 @@
 package com.example.recyclerview.retrofit
 
 import com.example.recyclerview.pojo.CategoryList
+import com.example.recyclerview.pojo.MealsByCategoryList
 import com.example.recyclerview.pojo.MealList
 import retrofit2.Call
 import retrofit2.http.GET
@@ -16,6 +17,9 @@ interface FoodApi {
     fun getMealDetails(@Query("i")id:String) : Call<MealList>
 
     @GET("filter.php?")
-    fun getPopularItems(@Query("c")categoryName:String): Call<CategoryList>
+    fun getPopularItems(@Query("c")categoryName:String): Call<MealsByCategoryList>
+
+    @GET("categories.php")
+    fun getCategories(): Call<CategoryList>
 
 }

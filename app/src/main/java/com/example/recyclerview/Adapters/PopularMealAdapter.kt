@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.recyclerview.databinding.PopularItemsBinding
-import com.example.recyclerview.pojo.CategoryMeals
+import com.example.recyclerview.pojo.MealsByCategory
 
 class PopularMealAdapter : RecyclerView.Adapter<PopularMealAdapter.PopularMealViewHolder>() {
-    private var mealsList = ArrayList<CategoryMeals>()
-    lateinit var onItemClick: ((CategoryMeals) -> Unit)
+    private var mealsList = ArrayList<MealsByCategory>()
+    lateinit var onItemClick: ((MealsByCategory) -> Unit)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMealViewHolder {
         val binding = PopularItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -33,7 +33,7 @@ class PopularMealAdapter : RecyclerView.Adapter<PopularMealAdapter.PopularMealVi
         }
     }
 
-    fun setMeals(mealsList: List<CategoryMeals>) {
+    fun setMeals(mealsList: List<MealsByCategory>) {
         this.mealsList.clear()
         this.mealsList.addAll(mealsList)
         notifyDataSetChanged()
