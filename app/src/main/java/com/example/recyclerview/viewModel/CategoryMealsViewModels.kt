@@ -1,7 +1,6 @@
 package com.example.recyclerview.viewModel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.recyclerview.pojo.MealsByCategory
@@ -13,25 +12,26 @@ import retrofit2.Response
 
 class CategoryMealsViewModels : ViewModel() {
 
-    val mealsLiveData = MutableLiveData<List<MealsByCategoryList>>()
-    fun getMealsByCategory(categoryName:String){
-        RetrofitInstance.foodApi.getMealsByCategory(categoryName).enqueue(object : Callback<MealsByCategoryList>{
+    private val mealsLiveData = MutableLiveData<List<MealsByCategory>>()
 
-            override fun onResponse(call: Call<MealsByCategoryList> , response: Response<MealsByCategoryList> , ) {
+    fun getMealsByCategory(categoryName: String) {
+        RetrofitInstance.foodApi.getMealsByCategory(categoryName).enqueue(object : Callback<MealsByCategoryList> {
+
+            override fun onResponse(call: Call<MealsByCategoryList>, response: Response<MealsByCategoryList>) {
                 response.body()?.let { mealsList ->
                     mealsLiveData.postValue(mealsList.meals)
-
                 }
             }
 
-            override fun onFailure(call: Call<MealsByCategoryList> , t: Throwable)
-            {
+            override fun onFailure(call: Call<MealsByCategoryList>, t: Throwable) {
                 Log.e("CategoryMealsViewModel", t.message.toString())
             }
-
         })
     }
-    fun observeMealsLiveData(): LiveData<List<MealsByCategory>>{
+
+    fun observeMealsLiveData(): MutableLiveData<List<MealsByCategory>>
+    {
         return mealsLiveData
     }
 }
+
