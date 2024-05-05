@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -81,13 +82,13 @@ class HomeFragment : Fragment()
 
     private fun onCategoryClick()
     {
-        categoriesAdapter.onItemClicked = { Category ->
-            val intent = Intent(activity, CategoryMealsActivity::class.java)
-            intent.putExtra(CATEGORY_NAME,category.strCAtegory)
+        categoriesAdapter.(onItemClicked())() = { Category ->
+            val intent = Intent(activity , CategoryMealsActivity::class.java)
+            intent.putExtra(CATEGORY_NAME , category.strCAtegory)
             startActivity(intent)
-
         }
     }
+
 
     private fun prepareCategoriesRecyclerView()
     {
@@ -98,11 +99,10 @@ class HomeFragment : Fragment()
         }
     }
 
-    private fun observeCategoriesLiveData() {
-        homeMVVM.observeCategoriesLiveData().observe(viewLifecycleOwner, Observer { categories ->
-            categoriesAdapter.setCategoryList(categories)
-        })
-    }
+    private fun observeCategoriesLiveData() =
+            homeMVVM.observeCategoriesLiveData().observe(viewLifecycleOwner, Observer { categories ->
+                categoriesAdapter.setCategoryList(categories)
+            })
 
 
     private fun onPopularItemClick()

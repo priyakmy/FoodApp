@@ -1,6 +1,13 @@
+  //plugins {
+   // alias(libs.plugins.androidApplication)
+    // alias(libs.plugins.jetbrainsKotlinAndroid)
+    // id("androidx.room") version "2.6.1" apply false
+// }
+
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
+    id ("com.android.application")
+    id ("kotlin-android")
+    id ("kotlin-kapt") // Apply the Kotlin annotation processing plugin
 }
 
 android {
@@ -39,7 +46,11 @@ android {
     }
 }
 
+
 dependencies {
+    implementation(libs.androidx.room.common)
+    implementation(libs.androidx.room.common.jvm)
+    val room_version = "2.6.1"
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -50,6 +61,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation ("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+
 
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -67,4 +79,10 @@ dependencies {
     //gif
     implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.17")
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+
+    //room
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
 }
