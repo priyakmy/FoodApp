@@ -49,7 +49,6 @@ android {
 
 dependencies {
     implementation(libs.androidx.room.common)
-    implementation(libs.androidx.room.common.jvm)
     val room_version = "2.6.1"
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -71,6 +70,7 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-rc01")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0-rc01")
     implementation ("android.arch.lifecycle:extensions:1.1.0")
+
 
     //intuit
     implementation ("com.intuit.sdp:sdp-android:1.0.6")
