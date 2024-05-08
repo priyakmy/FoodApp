@@ -6,14 +6,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.recyclerview.pojo.CategoryList
 
 class CategoriesRecyclerAdapter : RecyclerView.Adapter<CategoriesRecyclerAdapter.CategoryViewHolder>() {
     private var categoryList:List<Category> = ArrayList()
     private lateinit var onItemClick: OnItemCategoryClicked
     private lateinit var onLongCategoryClick:OnLongCategoryClick
 
-    fun setCategoryList(categoryList: List<Category>){
-        this.categoryList = categoryList
+    fun setCategoryList(categoryList: List<CategoryList>){
+        this.categoryList = CategoryList
         notifyDataSetChanged()
     }
 

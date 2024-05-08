@@ -10,7 +10,8 @@ import com.example.recyclerview.pojo.MealsByCategory
 
 class PopularMealAdapter : RecyclerView.Adapter<PopularMealAdapter.PopularMealViewHolder>() {
     private var mealsList = ArrayList<MealsByCategory>()
-    lateinit var onItemClick: ((MealsByCategory) -> Unit)
+    var onItemClick: ((MealsByCategory) -> Unit)?= null
+    lateinit var onLongItemClick : (MealsByCategory) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMealViewHolder {
         val binding = PopularItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -29,7 +30,11 @@ class PopularMealAdapter : RecyclerView.Adapter<PopularMealAdapter.PopularMealVi
                 .into(holder.binding.imgPopularMeal)
 
         holder.itemView.setOnClickListener {
-            onItemClick.invoke(mealsList[position])
+            onItemClick?.invoke(mealsList[position])
+        }
+        holder.itemView.setOnLongClickListener{
+            onLongItemClick?.invoke(mealsList[position])
+            true
         }
     }
 

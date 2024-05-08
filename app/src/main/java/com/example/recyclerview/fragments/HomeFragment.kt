@@ -8,15 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.recyclerview.Adapters.CategoriesRecyclerAdapter
 import com.example.recyclerview.Adapters.PopularMealAdapter
 import com.example.recyclerview.activites.CategoryMealsActivity
+import com.example.recyclerview.activites.MainActivity
 import com.example.recyclerview.activites.MealActivity
 import com.example.recyclerview.databinding.FragmentHomeBinding
+import com.example.recyclerview.fragments.bottomSheet.MealBottomSheetFragment
 import com.example.recyclerview.pojo.Meal
 import com.example.recyclerview.pojo.MealList
 import com.example.recyclerview.retrofit.RetrofitInstance
@@ -28,7 +29,7 @@ import retrofit2.Response
 class HomeFragment : Fragment()
 {
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var homeMVVM : HomeViewModel
+    private lateinit var viewModel : HomeViewModel
     private lateinit var randomMeal : Meal
     private lateinit var popularItemsAdapter : PopularMealAdapter
     private lateinit var categoriesAdapter: CategoriesRecyclerAdapter
@@ -46,7 +47,10 @@ class HomeFragment : Fragment()
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        homeMVVM = ViewModelProviders.of(this)[HomeViewModel::class.java]
+
+        viewModel = (activity as MainActivity).viewModel
+
+        popularItemsAdapter = PopularMealAdapter()
     }
 
     override fun onCreateView(
@@ -63,26 +67,36 @@ class HomeFragment : Fragment()
         popularItemsAdapter = PopularMealAdapter()
         preparePopularItemsRecyclerView()
 
-        homeMVVM.getRandomModel()
+        viewModel.getRandomModel()
         observeRandomMeal()
         onRandomMealClick()
 
-        homeMVVM.getPopularItems()
+        viewModel.getPopularItems()
         observePopularItemsLiveData()
         onPopularItemClick()
 
         prepareCategoriesRecyclerView()
-        homeMVVM.getCategories()
+        viewModel.getCategories()
         observeCategoriesLiveData()
         onCategoryClick()
+
+        onPopularItemLongClick()
 
 
 
     }
 
+    private fun onPopularItemLongClick()
+    {
+        popularItemsAdapter.onLongItemClick ={ meal ->
+            val mealBottomSheetFragment = MealBottomSheetFragment.newInstance(meal .idMeal)
+            mealBottomSheetFragment.show(childFragmentManager,"Meal Info")
+        }
+    }
+
     private fun onCategoryClick()
     {
-        categoriesAdapter.(onItemClicked())() = { Category ->
+        categoriesAdapter.(onItemClicked()) = { Category ->
             val intent = Intent(activity , CategoryMealsActivity::class.java)
             intent.putExtra(CATEGORY_NAME , category.strCAtegory)
             startActivity(intent)
@@ -99,10 +113,12 @@ class HomeFragment : Fragment()
         }
     }
 
-    private fun observeCategoriesLiveData() =
-            homeMVVM.observeCategoriesLiveData().observe(viewLifecycleOwner, Observer { categories ->
-                categoriesAdapter.setCategoryList(categories)
-            })
+    private fun observeCategoriesLiveData()
+    {
+        viewModel.observeCategoriesLiveData().observe(viewLifecycleOwner , Observer { categories ->
+            categoriesAdapter.setCategoryList(categories)
+        })
+    }
 
 
     private fun onPopularItemClick()
@@ -128,7 +144,7 @@ class HomeFragment : Fragment()
 
     private fun observePopularItemsLiveData()
     {
-        homeMVVM.observePopularItemsLiveData().observe(
+        viewModel.observePopularItemsLiveData().observe(
                 viewLifecycleOwner ,
         ) { mealList ->
             Log.d("tag", "observePopularItemsLiveData:${mealList.size} ")
@@ -140,9 +156,9 @@ class HomeFragment : Fragment()
     {
         binding.randomMeal.setOnClickListener{
             val intent = Intent(activity,MealActivity::class.java)
-            intent.putExtra(MEAL_ID,homeMVVM.randomMealLiveData.value?.idMeal)
-            intent.putExtra(MEAL_NAME,homeMVVM.randomMealLiveData.value?.strMeal)
-            intent.putExtra(MEAL_THUMB, homeMVVM.randomMealLiveData.value?.strMealThumb)
+            intent.putExtra(MEAL_ID , viewModel.randomMealLiveData.value?.idMeal)
+            intent.putExtra(MEAL_NAME , viewModel.randomMealLiveData.value?.strMeal)
+            intent.putExtra(MEAL_THUMB , viewModel.randomMealLiveData.value?.strMealThumb)
             startActivity(intent)
 
         }
@@ -150,7 +166,7 @@ class HomeFragment : Fragment()
 
     private fun observeRandomMeal()
     {
-        homeMVVM.observeRandomMealLiveData().observe(viewLifecycleOwner
+        viewModel.observeRandomMealLiveData().observe(viewLifecycleOwner
         ) { meal ->
             Glide.with(this@HomeFragment)
                     .load(meal.strMealThumb)

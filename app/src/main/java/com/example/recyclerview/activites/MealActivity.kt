@@ -14,7 +14,7 @@ import com.example.recyclerview.db.MealDatabase
 import com.example.recyclerview.fragments.HomeFragment
 import com.example.recyclerview.pojo.Meal
 import com.example.recyclerview.viewModel.MealViewModel
-import com.example.recyclerview.viewModel.MealViewModelFactory
+import com.example.recyclerview.viewModel.HomeViewModelFactory
 
 class MealActivity : AppCompatActivity()
 {
@@ -31,7 +31,7 @@ class MealActivity : AppCompatActivity()
         setContentView(binding.root)
 
         val mealDatabase = MealDatabase.getInstance(this)
-        val viewModelFactory = MealViewModelFactory(mealDatabase)
+        val viewModelFactory = HomeViewModelFactory(mealDatabase)
         mealMvvm = ViewModelProvider(this , viewModelFactory)[MealViewModel::class.java]
 
         getMealInformationFromIntent()
@@ -72,10 +72,10 @@ class MealActivity : AppCompatActivity()
     private fun observerMealDetailLiveData() {
         mealMvvm.observeMealDetailLiveData().observe(this
         ) { value ->
-            fun onChanged(t: Meal?) {
+            fun onChanged(t: Meal?)
+            {
                 onResponseCase()
-                val meal = t
-                mealToSave = meal
+                mealToSave = t
 
                 binding.tvCategory.text = "Category : ${value.strCategory}"
                 binding.tvAreaInfo.text = "Area : ${value.strArea}"
