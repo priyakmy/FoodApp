@@ -35,16 +35,6 @@ class MealViewModel( val mealDatabase : MealDatabase): ViewModel()
     {
         return mealDetailLiveData
     }
-    fun insertMeal(meal: Meal){
-        viewModelScope.launch {
-            mealDatabase.mealDao().insertMeal(meal)
-        }
-    }
-    fun deleteMeal(meal: Meal)
-    {
-        viewModelScope.launch {
-            mealDatabase.mealDao().deleteMeal(meal)
 
-        }
-    }
+
 }

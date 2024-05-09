@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.recyclerview.db.MealDatabase
 import com.example.recyclerview.pojo.CategoryList
 import com.example.recyclerview.pojo.MealsByCategoryList
@@ -11,6 +12,7 @@ import com.example.recyclerview.pojo.MealsByCategory
 import com.example.recyclerview.pojo.Meal
 import com.example.recyclerview.pojo.MealList
 import com.example.recyclerview.retrofit.RetrofitInstance
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,12 +20,13 @@ import retrofit2.Response
 class HomeViewModel(
         private val mealDatabase : MealDatabase
 ) : ViewModel() {
-    private val randomMealLiveData = MutableLiveData<Meal>()
+    val randomMealLiveData = MutableLiveData<Meal>()
     private val popularItemsLiveData = MutableLiveData<List<MealsByCategory>>()
     private val categoriesLiveData = MutableLiveData<List<CategoryList>>()
     private val bottomSheetLiveData = MutableLiveData<Meal>()
     private val searchMealsLiveData = MutableLiveData<List<Meal>>()
     private val favouriteMealsLiveData = mealDatabase.mealDao().getAllMeals()
+
 
 
      private var saveStateRandomMeal : Meal? = null
@@ -66,10 +69,11 @@ class HomeViewModel(
     fun getCategories() {
         RetrofitInstance.foodApi.getCategories().enqueue(object : Callback<CategoryList> {
             override fun onResponse(call: Call<CategoryList>, response: Response<CategoryList>) {
-                if (response.isSuccessful) {
-                    categoriesLiveData.postValue(response.body()?.categories)
+               response.body()?.let { categoryList ->
+                   categoriesLiveData.postValue(categoryList.categories)
+
+               }
                 }
-            }
 
             override fun onFailure(call: Call<CategoryList>, t: Throwable) {
                 Log.e("HomeViewModel", "Error fetching categories: ${t.message}")
@@ -108,6 +112,20 @@ class HomeViewModel(
                 Log.e("HomeViewModel", "Error searching meals: ${t.message}")
             }
         })
+    }
+
+    fun deleteMeal(meal: Meal)
+    {
+        viewModelScope.launch {
+            mealDatabase.mealDao().deleteMeal(meal)
+
+        }
+    }
+
+    fun insertMeal(meal: Meal){
+        viewModelScope.launch {
+            mealDatabase.mealDao().insertMeal(meal)
+        }
     }
 
     fun observeRandomMealLiveData(): LiveData<Meal> = randomMealLiveData
